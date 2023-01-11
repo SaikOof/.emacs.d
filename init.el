@@ -48,18 +48,6 @@
   :config
   (setq evil-want-integration t)
   (evil-collection-init))
-  
-;;; EAF
-(use-package eaf
-  :load-path "~/.emacs.d/site-lisp/emacs-application-framework"
-  :custom
-  (eaf-browser-continue-where-left-off t)
-  (eaf-browser-enable-adblocker t)
-  (browse-url-browser-function 'eaf-open-browser)
-  :config
-  (defalias 'browse-web #'eaf-open-browser)
-  (require 'eaf-browser)
-  (require 'eaf-pdf-viewer))
 
 ;;; Doom Bar
 (use-package doom-modeline
@@ -81,12 +69,3 @@
 
 ;;; MPV
 (use-package mpv)
-
-;;; Elcord
-(require 'elcord)
-
-;;; EMMS
-(require 'emms-setup)
-(emms-all)
-(emms-default-players)
-(setq emms-source-file-default-directory "~/Music/")
