@@ -8,6 +8,7 @@
 (setq use-dialog-box nil)
 (setq auto-save-default nil)
 (setq make-backup-files nil)
+(setq ns-alternate-modifier nil)
 
 ;;; Change custom-garbage output to custom.el rather than init.el
 (setq custom-file "~/.emacs.d/custom.el")
