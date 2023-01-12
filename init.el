@@ -1,6 +1,6 @@
 ;;; Startup
 
-;;; Minimal-like emacs
+;;; basic-settings emacs
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
