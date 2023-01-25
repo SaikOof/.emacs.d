@@ -5,10 +5,13 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tooltip-mode -1)
+(setq mouse-autoselect-window t
+      focus-follow-mouse t)
 (setq use-dialog-box nil)
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (setq ns-alternate-modifier nil)
+(windmove-default-keybindings)
 
 ;;; Change custom-garbage output to custom.el rather than init.el
 (setq custom-file "~/.emacs.d/custom.el")
@@ -49,7 +52,7 @@
   :config
   (setq evil-want-integration t)
   (evil-collection-init))
-
+  
 ;;; Doom Bar
 (use-package doom-modeline
   :config
@@ -70,3 +73,6 @@
 
 ;;; MPV
 (use-package mpv)
+
+;;; VTerm
+(use-package vterm)
