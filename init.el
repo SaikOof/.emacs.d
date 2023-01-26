@@ -1,6 +1,10 @@
-;;; Startup
+;;;;; Startup
+;;;; basic-settings emacs
 
-;;; basic-settings emacs
+;; Change custom-garbage output to custom.el rather than init.el
+(setq custom-file "~/.emacs.d/custom.el")
+(load-file custom-file)
+
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
@@ -13,22 +17,34 @@
 (setq ns-alternate-modifier nil)
 (windmove-default-keybindings)
 
-;;; Change custom-garbage output to custom.el rather than init.el
-(setq custom-file "~/.emacs.d/custom.el")
-(load-file custom-file)
+;;;; Packages
 
-;;; PACKAGE LIST
-(setq package-archives 
-      '(("melpa" . "https://melpa.org/packages/")
-        ("elpa" . "https://elpa.gnu.org/packages/")))
+;;; Straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-;;; BOOTSTRAP USE-PACKAGE
-(package-initialize)
-(setq use-package-always-ensure t)
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(eval-when-compile (require 'use-package))
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+
+;;; EXWM
+;(use-package exwm
+;:config
+;(require 'exwm)
+;(require 'exwm-config)
+;(require 'exwm-systemtray)
+;(exwm-config-example)
+;(exwm-systemtray-enable)
+;(setq exwm-workspace-number 9))
 
 ;;; Vim Bindings
 (use-package evil
@@ -52,7 +68,20 @@
   :config
   (setq evil-want-integration t)
   (evil-collection-init))
-  
+
+;;; Dirvish
+(use-package dirvish
+:init
+(dirvish-override-dired-mode)
+:config
+(setq dirvish-mode-line-format
+      '(:left (sort symlink) :right (omit yank index)))
+(setq dirvish-attributes
+      '(all-the-icons file-time file-size collapse subtree-state vc-state git-msg))
+(setq delete-by-moving-to-trash t)
+(setq dired-listing-switches
+      "-l --almost-all --human-readable --group-directories-first --no-group"))
+
 ;;; Doom Bar
 (use-package doom-modeline
   :config
