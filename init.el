@@ -1,21 +1,16 @@
 ;;;;; Startup
 ;;;; basic-settings emacs
-
-;; Change custom-garbage output to custom.el rather than init.el
-(setq custom-file "~/.emacs.d/custom.el")
-(load-file custom-file)
-
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tooltip-mode -1)
+(windmove-default-keybindings)
 (setq mouse-autoselect-window t
       focus-follow-mouse t)
 (setq use-dialog-box nil)
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (setq ns-alternate-modifier nil)
-(windmove-default-keybindings)
 
 ;;;; Packages
 
@@ -35,6 +30,7 @@
 
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
+(setq straight-check-for-modifications '(check-on-save find-when-checking))
 
 ;;; EXWM
 ;(use-package exwm
@@ -69,13 +65,19 @@
   (setq evil-want-integration t)
   (evil-collection-init))
 
+;;; All the icons
+(use-package all-the-icons
+  :config
+  (setq inhibit-compacting-font-caches t))
+
 ;;; Dirvish
 (use-package dirvish
 :init
 (dirvish-override-dired-mode)
 :config
+(setq dired-mouse-drag-files t)
 (setq dirvish-mode-line-format
-      '(:left (sort symlink) :right (omit yank index)))
+        '(:left (sort symlink) :right (omit yank index)))
 (setq dirvish-attributes
       '(all-the-icons file-time file-size collapse subtree-state vc-state git-msg))
 (setq delete-by-moving-to-trash t)
