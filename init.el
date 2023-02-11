@@ -70,19 +70,23 @@
   :config
   (setq inhibit-compacting-font-caches t))
 
-;;; Dirvish
-(use-package dirvish
-:init
-(dirvish-override-dired-mode)
-:config
-(setq dired-mouse-drag-files t)
-(setq dirvish-mode-line-format
-        '(:left (sort symlink) :right (omit yank index)))
-(setq dirvish-attributes
-      '(all-the-icons file-time file-size collapse subtree-state vc-state git-msg))
-(setq delete-by-moving-to-trash t)
-(setq dired-listing-switches
-      "-l --almost-all --human-readable --group-directories-first --no-group"))
+;;; EMMS
+(use-package emms
+  :config
+  (emms-all)
+  (setq emms-player-list '(emms-player-mpv)
+	emms-info-functions '(emms-info-native))
+  (setq emms-source-file-default-directory "~/Music/")
+  ;; Musikcube-like binding
+  :bind
+  ("C-c C-SPC" . emms-pause)
+  ("C-c C-o" . emms-seek-forward)
+  ("C-c C-u" . emms-seek-backward)
+  ("C-c C-l" . emms-next)
+  ("C-c C-j" . emms-previous)
+  ("C-c C-i" . emms-volume-raise)
+  ("C-c C-k" . emms-volume-lower)
+  ("C-c C-." . emms-toggle-repeat-track))
 
 ;;; Doom Bar
 (use-package doom-modeline
