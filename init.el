@@ -73,10 +73,39 @@
 ;;; EMMS
 (use-package emms
   :config
-  (emms-all)
+  (emms-minimalistic)
   (setq emms-player-list '(emms-player-mpv)
 	emms-info-functions '(emms-info-native))
   (setq emms-source-file-default-directory "~/Music/")
+
+  ;;; MPV volume fix
+  (defvar emms-player-mpv-volume 50)
+
+  (defun emms-player-mpv-get-volume ()
+    "Sets `emms-player-mpv-volume' to the current volume value
+and sends a message of the current volume status."
+    (emms-player-mpv-cmd '(get_property volume)
+                         #'(lambda (vol err)
+                             (unless err
+                               (let ((vol (truncate vol)))
+                                 (setq emms-player-mpv-volume vol)
+                                 (message "Music volume: %s%%"
+                                           vol))))))
+
+  (defun emms-player-mpv-raise-volume (&optional amount)
+    (interactive)
+    (let* ((amount (or amount 10))
+           (new-volume (+ emms-player-mpv-volume amount)))
+      (if (> new-volume 100)
+          (emms-player-mpv-cmd '(set_property volume 100))
+        (emms-player-mpv-cmd `(add volume ,amount))))
+    (emms-player-mpv-get-volume))
+
+  (defun emms-player-mpv-lower-volume (&optional amount)
+    (interactive)
+    (emms-player-mpv-cmd `(add volume ,(- (or amount '10))))
+    (emms-player-mpv-get-volume))
+  
   ;; Musikcube-like binding
   :bind
   ("C-c C-SPC" . emms-pause)
@@ -84,8 +113,8 @@
   ("C-c C-u" . emms-seek-backward)
   ("C-c C-l" . emms-next)
   ("C-c C-j" . emms-previous)
-  ("C-c C-i" . emms-volume-raise)
-  ("C-c C-k" . emms-volume-lower)
+  ("C-c C-i" . emms-player-mpv-raise-volume)
+  ("C-c C-k" . emms-player-mpv-lower-volume)
   ("C-c C-." . emms-toggle-repeat-track))
 
 ;;; Doom Bar
