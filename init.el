@@ -1,5 +1,5 @@
 ;;;;; Startup
-;;;; basic-settings emacs
+;;;; Basic-settings emacs
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
@@ -11,6 +11,10 @@
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (setq ns-alternate-modifier nil)
+
+;;;; Binding Keys
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+(global-set-key (kbd "C-x w") 'kill-buffer-and-window)
 
 ;;;; Packages
 
@@ -55,15 +59,17 @@
   :config
   (evil-mode 1))
 
-;;; Undo
-(use-package undo-fu)
-
 ;;; Vim Bindings Everywhere else
 (use-package evil-collection
   :after evil
   :config
   (setq evil-want-integration t)
   (evil-collection-init))
+
+;;; Doom Bar
+(use-package doom-modeline
+  :config
+  (doom-modeline-mode))
 
 ;;; All the icons
 (use-package all-the-icons
@@ -79,7 +85,7 @@
   (setq emms-source-file-default-directory "~/Music/")
 
   ;;; MPV volume fix
-  (defvar emms-player-mpv-volume 50)
+  (defvar emms-player-mpv-volume 100)
 
   (defun emms-player-mpv-get-volume ()
     "Sets `emms-player-mpv-volume' to the current volume value
@@ -108,6 +114,7 @@ and sends a message of the current volume status."
   
   ;; Musikcube-like binding
   :bind
+  ("C-c m" . emms-play-file)
   ("C-c C-SPC" . emms-pause)
   ("C-c C-o" . emms-seek-forward)
   ("C-c C-u" . emms-seek-backward)
@@ -116,11 +123,6 @@ and sends a message of the current volume status."
   ("C-c C-i" . emms-player-mpv-raise-volume)
   ("C-c C-k" . emms-player-mpv-lower-volume)
   ("C-c C-." . emms-toggle-repeat-track))
-
-;;; Doom Bar
-(use-package doom-modeline
-  :config
-  (doom-modeline-mode))
 
 ;;; Vertico
 (use-package vertico
@@ -132,11 +134,11 @@ and sends a message of the current volume status."
   :config
   (load-theme 'gruvbox t))
 
-;;; cIRCe
+;;; Packages with no config
+(use-package undo-fu)
+(use-package unicode-fonts)
+(use-package elpher)
 (use-package circe)
-
-;;; MPV
 (use-package mpv)
-
-;;; VTerm
 (use-package vterm)
+(use-package elcord)
